@@ -372,7 +372,8 @@
         type: "waitlist",
         name: "",
         email,
-        distraction: "",
+        distraction: ($("#waitlist-distraction")?.value || "").trim(),
+        comments:    ($("#waitlist-comments")?.value    || "").trim(),
         source: "404",
         timestamp: new Date().toISOString(),
       }).then(() => {

@@ -102,9 +102,9 @@
       <div class="anim-4 bg-slate-800/50 border border-slate-700/50 rounded-2xl p-8 mb-8">
         <h2 class="text-lg font-semibold text-white mb-2">Únete a la lista de espera</h2>
 
-        <form id="waitlist-form" novalidate class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <div class="flex-1">
-            <label for="waitlist-email" class="sr-only">Tu correo electrónico</label>
+        <form id="waitlist-form" novalidate class="flex flex-col gap-3 max-w-md mx-auto text-left">
+          <div>
+            <label for="waitlist-email" class="block text-xs text-slate-400 mb-1 ml-1">Correo electrónico <span class="text-rose-400">*</span></label>
             <input
               type="email"
               id="waitlist-email"
@@ -114,12 +114,32 @@
               required
             />
           </div>
+          <div>
+            <label for="waitlist-distraction" class="block text-xs text-slate-400 mb-1 ml-1">¿Qué app te distrae más? <span class="text-slate-600">(opcional)</span></label>
+            <input
+              type="text"
+              id="waitlist-distraction"
+              name="distraction"
+              placeholder="Instagram, TikTok, YouTube…"
+              class="input-waitlist w-full text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm"
+            />
+          </div>
+          <div>
+            <label for="waitlist-comments" class="block text-xs text-slate-400 mb-1 ml-1">Comentarios adicionales <span class="text-slate-600">(opcional)</span></label>
+            <textarea
+              id="waitlist-comments"
+              name="comments"
+              rows="3"
+              placeholder="Cuéntanos cómo afecta tu concentración o qué esperas de TaskMaster…"
+              class="input-waitlist w-full text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm resize-none"
+            ></textarea>
+          </div>
           <button
             type="submit"
             id="waitlist-btn"
-            class="btn-primary text-white font-semibold px-6 py-3 rounded-xl text-sm whitespace-nowrap flex items-center justify-center gap-2"
+            class="btn-primary text-white font-semibold px-6 py-3 rounded-xl text-sm flex items-center justify-center gap-2"
           >
-            <span id="waitlist-btn-text">Avisarme</span>
+            <span id="waitlist-btn-text">Avisarme del lanzamiento</span>
             <svg id="waitlist-btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
             </svg>

@@ -3,7 +3,7 @@
  *
  * Handles two event types via HTTP POST:
  *   { type: "404",      url, referrer, userAgent, timestamp }
- *   { type: "waitlist", name, email, distraction, source, timestamp }
+ *   { type: "waitlist", name, email, distraction, comments, source, timestamp }
  *
  * Deploy as: Execute as "Me", Access "Anyone"
  * Copy the Web App URL into APPS_SCRIPT_URL in main.js
@@ -46,7 +46,7 @@ function handle404(data) {
 /* ── Waitlist handler ────────────────────────────────────── */
 
 function handleWaitlist(data) {
-  const sheet = getOrCreateSheet(SHEET_LIST, ["Fecha", "Nombre", "Email", "¿Qué te distrae?", "Fuente"]);
+  const sheet = getOrCreateSheet(SHEET_LIST, ["Fecha", "Nombre", "Email", "¿Qué te distrae?", "Comentarios", "Fuente"]);
 
   // Evita emails duplicados
   const lastRow = sheet.getLastRow();
@@ -60,6 +60,7 @@ function handleWaitlist(data) {
     data.name        || "",
     data.email       || "",
     data.distraction || "",
+    data.comments    || "",
     data.source      || "index",
   ]);
 }
