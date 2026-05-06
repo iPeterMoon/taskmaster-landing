@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <filter id="phoneShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <rect x="35" y="25" width="130" height="160" rx="16" fill="#7AC5C1" />
+
+  <rect x="48" y="42" width="104" height="133" rx="6" fill="#FFFFFF" />
+
+  <rect x="75" y="18" width="50" height="18" rx="4" fill="#90A4AE" />
+  <rect x="85" y="12" width="30" height="10" rx="3" fill="#B0BEC5" />
+  <circle cx="100" cy="27" r="3" fill="#607D8B" />
+
+  <rect x="60" y="55" width="80" height="6" rx="3" fill="#E0E6ED" />
+
+  <rect x="56" y="85" width="10" height="6" rx="3" fill="#E0E6ED" />
+  <rect x="56" y="110" width="10" height="6" rx="3" fill="#E0E6ED" />
+  <rect x="56" y="135" width="10" height="6" rx="3" fill="#E0E6ED" />
+
+  <rect x="134" y="85" width="10" height="6" rx="3" fill="#E0E6ED" />
+  <rect x="134" y="110" width="10" height="6" rx="3" fill="#E0E6ED" />
+  <rect x="134" y="135" width="10" height="6" rx="3" fill="#E0E6ED" />
+
+  <g filter="url(#phoneShadow)">
+    <rect x="70" y="75" width="60" height="95" rx="10" fill="#37474F" />
+    
+    <rect x="74" y="85" width="52" height="73" rx="4" fill="#F4F6F8" />
+    
+    <rect x="92" y="79" width="16" height="3" rx="1.5" fill="#546E7A" />
+    
+    <circle cx="100" cy="164" r="3" fill="#546E7A" />
+    
+    <path d="M 86 120 L 96 130 L 114 105" fill="none" stroke="#4CAF50" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

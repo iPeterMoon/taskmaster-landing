@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App en desarrollo — TaskMaster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/output.css" />
+    <style>
+      .hero-404 {
+        background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99,102,241,0.25) 0%, transparent 65%),
+                    #0f172a;
+        min-height: 100vh;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(99,102,241,0.4);
+      }
+      .glow-ring {
+        background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+        border: 1px solid rgba(99,102,241,0.2);
+      }
+      .input-waitlist {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(99,102,241,0.3);
+        transition: all 0.3s ease;
+      }
+      .input-waitlist:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+      }
+      .float-anim {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .anim-1 { animation: fadeUp 0.6s ease forwards 0.1s; opacity: 0; }
+      .anim-2 { animation: fadeUp 0.6s ease forwards 0.25s; opacity: 0; }
+      .anim-3 { animation: fadeUp 0.6s ease forwards 0.4s; opacity: 0; }
+      .anim-4 { animation: fadeUp 0.6s ease forwards 0.55s; opacity: 0; }
+      .anim-5 { animation: fadeUp 0.6s ease forwards 0.7s; opacity: 0; }
+    </style>
+  </head>
+
+  <body class="hero-404 text-slate-100 font-sans antialiased flex flex-col items-center justify-center px-4" data-page="404">
+
+    <!-- Nav mínimo -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+      <a href="/" class="flex items-center gap-2 w-fit">
+        <div class="w-7 h-7 rounded-lg bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">
+          FF
+        </div>
+        <span class="font-bold text-white text-sm">TaskMaster</span>
+      </a>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="max-w-2xl w-full text-center py-24">
+
+      <!-- Ícono flotante -->
+      <div class="anim-1 float-anim mx-auto mb-8 w-28 h-28 glow-ring rounded-3xl flex items-center justify-center">
+        <svg class="w-14 h-14 text-indigo-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18h3"/>
+        </svg>
+      </div>
+
+      <!-- Número 404 estilizado -->
+      <div class="anim-1 text-8xl sm:text-9xl font-black bg-linear-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent leading-none mb-4">
+        404
+      </div>
+
+      <!-- Titular -->
+      <h1 class="anim-2 text-2xl sm:text-3xl font-bold text-white mb-4 leading-snug">
+        La app aún no está lista,<br/>
+        pero <span class="text-indigo-400">tú nos ayudaste a confirmar</span> que sí la necesitas.
+      </h1>
+
+      <!-- Mensaje empático -->
+      <p class="anim-3 text-slate-400 leading-relaxed mb-4 max-w-lg mx-auto">
+        Que hayas llegado hasta aquí es una señal importante. <strong class="text-slate-200">TaskMaster está en desarrollo activo</strong> y tu interés nos impulsa a construirlo más rápido.
+      </p>
+      <p class="anim-3 text-slate-400 leading-relaxed mb-10 max-w-lg mx-auto">
+        Déjanos tu correo y serás de los primeros en acceder cuando lancemos. Sin spam, solo el aviso de lanzamiento.
+      </p>
+
+      <!-- Formulario lista de espera -->
+      <div class="anim-4 bg-slate-800/50 border border-slate-700/50 rounded-2xl p-8 mb-8">
+        <h2 class="text-lg font-semibold text-white mb-2">Únete a la lista de espera</h2>
+        <p class="text-sm text-slate-500 mb-6">
+          <span id="waitlist-count" class="text-indigo-400 font-medium">+340 personas</span> ya están esperando el lanzamiento.
+        </p>
+
+        <form id="waitlist-form" novalidate class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <div class="flex-1">
+            <label for="waitlist-email" class="sr-only">Tu correo electrónico</label>
+            <input
+              type="email"
+              id="waitlist-email"
+              name="email"
+              placeholder="tu@correo.com"
+              class="input-waitlist w-full text-white placeholder-slate-500 rounded-xl px-4 py-3 text-sm"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            id="waitlist-btn"
+            class="btn-primary text-white font-semibold px-6 py-3 rounded-xl text-sm whitespace-nowrap flex items-center justify-center gap-2"
+          >
+            <span id="waitlist-btn-text">Avisarme</span>
+            <svg id="waitlist-btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Error -->
+        <p id="waitlist-error" class="hidden mt-3 text-sm text-rose-400"></p>
+
+        <!-- Éxito -->
+        <div id="waitlist-success" class="hidden mt-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-emerald-400 text-sm">
+          <div class="flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>¡Listo! Te avisaremos cuando lancemos. Gracias por creer en esto 🙌</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plataforma info -->
+      <div class="anim-4 flex items-center justify-center gap-2 text-sm text-slate-500 mb-8">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <span>iOS</span>
+        <span class="text-slate-700">•</span>
+        <img src="imgs/play-store.svg" alt="Android" class="w-4 h-4 fill-slate-500"/>
+        <span>Android</span>
+        <span class="text-slate-700">•</span>
+        <span class="text-indigo-400 font-medium">Próximamente</span>
+      </div>
+
+      <!-- Volver al inicio -->
+      <div class="anim-5">
+        <a href="/" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+    </main>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>

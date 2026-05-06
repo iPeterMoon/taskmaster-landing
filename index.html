@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="TaskMaster — Completa tus tareas, desbloquea tu tiempo libre. App móvil que bloquea distracciones hasta que termines lo que importa."
+    />
+    <title>TaskMaster — Primero tus tareas, luego tu tiempo libre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/output.css" />
+    <style>
+      /* Gradiente de fondo hero */
+      .hero-gradient {
+        background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.3) 0%, transparent 70%),
+                    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139,92,246,0.15) 0%, transparent 60%),
+                    #0f172a;
+      }
+      .card-glow:hover {
+        box-shadow: 0 0 30px rgba(99,102,241,0.2);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(99,102,241,0.4);
+      }
+      .btn-secondary {
+        border: 1px solid rgba(99,102,241,0.5);
+        transition: all 0.3s ease;
+      }
+      .btn-secondary:hover {
+        border-color: #6366f1;
+        background: rgba(99,102,241,0.1);
+        transform: translateY(-2px);
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .feature-icon {
+        background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+        border: 1px solid rgba(99,102,241,0.3);
+      }
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      #mobile-menu {
+        transition: max-height 0.3s ease, opacity 0.3s ease;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+      }
+      .task-item-done {
+        text-decoration: line-through;
+        color: #64748b;
+      }
+      .lock-badge {
+        background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1));
+        border: 1px solid rgba(239,68,68,0.3);
+      }
+      .unlock-badge {
+        background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));
+        border: 1px solid rgba(16,185,129,0.3);
+      }
+      .step-connector {
+        background: linear-gradient(180deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.5) 100%);
+      }
+      .phone-mockup {
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        border: 1px solid rgba(99,102,241,0.25);
+        box-shadow: 0 0 60px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+      }
+      .task-check {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        border: 1.5px solid rgba(99,102,241,0.5);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .task-check.done {
+        background: #6366f1;
+        border-color: #6366f1;
+      }
+      .app-icon-locked {
+        filter: grayscale(1) brightness(0.5);
+        position: relative;
+      }
+      .guardian-bar {
+        background: linear-gradient(90deg, rgba(239,68,68,0.2), rgba(220,38,38,0.1));
+        border: 1px solid rgba(239,68,68,0.3);
+      }
+      #mobile-menu.open {
+        max-height: 400px;
+        opacity: 1;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-900 text-slate-100 font-sans antialiased">
+
+    <!-- ========== NAV ========== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a href="#inicio" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-lg group-hover:scale-110 transition-transform">
+              <img src="imgs/logo.svg" alt="TaskMaster Logo" class="w-full h-full">
+            </div>
+            <span class="font-bold text-lg tracking-tight text-white">TaskMaster</span>
+          </a>
+
+          <!-- Nav Desktop -->
+          <div class="hidden md:flex items-center gap-8">
+            <a href="#como-funciona" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Cómo Funciona</a>
+            <a href="#nosotros" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Sobre Nosotros</a>
+            <a href="#caracteristicas" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Características</a>
+            <a href="#encuesta" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Encuesta</a>
+            <a href="#contacto" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Contacto</a>
+            <a href="#descarga" class="btn-primary text-sm font-medium text-white px-5 py-2 rounded-full">
+              Descargar App
+            </a>
+          </div>
+
+          <!-- Hamburguesa Mobile -->
+          <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-slate-800 transition-colors" aria-label="Abrir menú">
+            <span class="hamburger-line block w-5 h-0.5 bg-slate-300 transition-all duration-300"></span>
+            <span class="hamburger-line block w-5 h-0.5 bg-slate-300 transition-all duration-300"></span>
+            <span class="hamburger-line block w-5 h-0.5 bg-slate-300 transition-all duration-300"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-1">
+          <a href="#como-funciona" class="mobile-nav-link px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Cómo Funciona</a>
+          <a href="#nosotros" class="mobile-nav-link px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Sobre Nosotros</a>
+          <a href="#caracteristicas" class="mobile-nav-link px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Características</a>
+          <a href="#encuesta" class="mobile-nav-link px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Encuesta</a>
+          <a href="#contacto" class="mobile-nav-link px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">Contacto</a>
+          <a href="#descarga" class="mobile-nav-link mt-2 btn-primary text-center text-sm font-medium text-white px-5 py-3 rounded-full">Descargar App</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section id="inicio" class="hero-gradient min-h-screen flex flex-col items-center justify-center px-4 pt-16 pb-8">
+      <div class="max-w-6xl mx-auto w-full">
+        <div class="grid lg:grid-cols-3 gap-12 items-center">
+
+          <!-- Texto hero -->
+          <div class="text-center lg:text-left lg:col-span-2">
+            <!-- Badge -->
+            <div class="fade-in inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-medium px-4 py-1.5 rounded-full mb-8">
+              <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse"></span>
+              En desarrollo — Únete a la lista de espera
+            </div>
+
+            <!-- Titular -->
+            <h1 class="fade-in text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+              No te falta tiempo.<br/>
+              <span class="bg-linear-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                Te sobran distracciones.
+              </span>
+            </h1>
+
+            <!-- Subtítulo -->
+            <p class="fade-in text-lg text-slate-400 mb-4 leading-relaxed">
+              TaskMaster bloquea tus apps distractoras mientras tengas tareas pendientes. Completa lo que importa y el acceso se desbloquea solo.
+            </p>
+            <p class="fade-in text-base text-slate-500 mb-10 leading-relaxed">
+              Sin fuerza de voluntad. Sin culpa. Solo un sistema que funciona.
+            </p>
+
+            <!-- Botones de descarga -->
+            <div id="descarga" class="fade-in flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-10">
+              <a
+                href="/descarga-ios.html"
+                data-platform="ios"
+                class="download-btn btn-primary group flex items-center gap-3 text-white font-semibold px-7 py-4 rounded-2xl w-full sm:w-auto justify-center"
+              >
+                <svg class="w-7 h-7 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                </svg>
+                <div class="text-left leading-tight">
+                  <div class="text-xs text-white/70 font-normal">Descargar en</div>
+                  <div class="text-base">App Store</div>
+                </div>
+              </a>
+
+              <a
+                href="/descarga-android.html"
+                data-platform="android"
+                class="download-btn btn-secondary group flex items-center gap-3 text-white font-semibold px-7 py-4 rounded-2xl w-full sm:w-auto justify-center"
+              >
+                <img src="imgs/play-store.svg" alt="Google Play" class="w-6 h-6">
+                <div class="text-left leading-tight">
+                  <div class="text-xs text-white/70 font-normal">Disponible en</div>
+                  <div class="text-base">Google Play</div>
+                </div>
+              </a>
+            </div>
+
+          </div><!-- fin columna texto -->
+
+          <!-- Mockup de teléfono -->
+          <div class="fade-in flex justify-center lg:justify-end col-span-1">
+            <div class="phone-mockup rounded-[2.5rem] w-70 sm:w-75 overflow-hidden select-none">
+              <!-- Notch -->
+              <div class="flex justify-center pt-4 pb-2">
+                <div class="w-20 h-5 bg-slate-950 rounded-full"></div>
+              </div>
+
+              <!-- Contenido de la app -->
+              <div class="px-5 pb-8">
+
+                <!-- Header app -->
+                <div class="flex items-center justify-between mb-5">
+                  <div>
+                    <p class="text-xs text-slate-500">Lunes, 5 mayo</p>
+                    <p class="text-sm font-bold text-white">Mis tareas</p>
+                  </div>
+                  <!-- Estado guardián: bloqueado -->
+                  <div id="hero-guardian-badge" class="lock-badge flex items-center gap-1.5 px-2.5 py-1 rounded-full">
+                    <svg id="hero-lock-icon" class="w-3 h-3 text-rose-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    <span id="hero-guardian-text" class="text-xs font-medium text-rose-400">Guardián activo</span>
+                  </div>
+                </div>
+
+                <!-- Lista de tareas interactiva -->
+                <div class="space-y-2 mb-5" id="hero-task-list">
+                  <!-- Tarea 1 -->
+                  <div class="hero-task flex items-center gap-3 bg-slate-800/60 border border-slate-700/50 rounded-xl px-3 py-2.5 cursor-pointer hover:border-indigo-500/40 transition-all" data-done="false">
+                    <div class="task-check" id="check-0"></div>
+                    <span class="text-sm text-slate-200 task-label">Revisar correos del día</span>
+                  </div>
+                  <!-- Tarea 2 -->
+                  <div class="hero-task flex items-center gap-3 bg-slate-800/60 border border-slate-700/50 rounded-xl px-3 py-2.5 cursor-pointer hover:border-indigo-500/40 transition-all" data-done="false">
+                    <div class="task-check" id="check-1"></div>
+                    <span class="text-sm text-slate-200 task-label">Entregar reporte semanal</span>
+                  </div>
+                  <!-- Tarea 3 -->
+                  <div class="hero-task flex items-center gap-3 bg-slate-800/60 border border-slate-700/50 rounded-xl px-3 py-2.5 cursor-pointer hover:border-indigo-500/40 transition-all" data-done="false">
+                    <div class="task-check" id="check-2"></div>
+                    <span class="text-sm text-slate-200 task-label">Estudiar 45 min de inglés</span>
+                  </div>
+                </div>
+
+                <!-- Barra de progreso -->
+                <div class="mb-5">
+                  <div class="flex justify-between text-xs text-slate-500 mb-1.5">
+                    <span>Progreso</span>
+                    <span id="hero-progress-text">0 / 3</span>
+                  </div>
+                  <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                    <div id="hero-progress-bar" class="h-full bg-linear-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
+                </div>
+
+                <!-- Apps bloqueadas -->
+                <div id="hero-apps-section">
+                  <p class="text-xs text-slate-500 mb-2">Apps bloqueadas hasta completar</p>
+                  <div class="flex gap-2">
+
+                    <!-- Instagram — se desbloquea al completar las 3 tareas -->
+                    <div class="app-icon-locked w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden" data-unlock-at="3" style="background: radial-gradient(circle at 30% 110%, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                      </svg>
+                    </div>
+
+                    <!-- X / Twitter — se desbloquea con tarea 1 -->
+                    <div class="app-icon-locked w-10 h-10 rounded-xl flex items-center justify-center bg-black" data-unlock-at="1">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      </svg>
+                    </div>
+
+                    <!-- YouTube — se desbloquea con tarea 2 -->
+                    <div class="app-icon-locked w-10 h-10 rounded-xl flex items-center justify-center bg-[#FF0000]" data-unlock-at="2">
+                      <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                    </div>
+
+                    <!-- TikTok — se desbloquea con tarea 3 -->
+                    <div class="app-icon-locked w-10 h-10 rounded-xl flex items-center justify-center bg-black" data-unlock-at="3">
+                      <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.52V6.75a4.85 4.85 0 01-1.02-.06z"/>
+                      </svg>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- Hint interactivo -->
+                <p class="text-xs text-slate-600 mt-4 text-center">↑ Toca las tareas para completarlas</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="mt-12 flex flex-col items-center gap-2 text-slate-600 animate-bounce">
+        <span class="text-xs uppercase tracking-widest">Explorar</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ========== CÓMO FUNCIONA ========== -->
+    <section id="como-funciona" class="bg-slate-800/30 py-24 px-4">
+      <div class="max-w-5xl mx-auto text-center">
+        <div class="fade-in inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">El sistema</div>
+        <h2 class="fade-in text-3xl sm:text-4xl font-bold mb-4 text-white">Tan simple como debería ser</h2>
+        <p class="fade-in text-slate-400 max-w-xl mx-auto mb-16">
+          No necesitas más disciplina. Necesitas un sistema que trabaje a tu favor antes de que llegue la tentación.
+        </p>
+
+        <!-- Pasos -->
+        <div class="relative">
+          <!-- Línea conectora desktop -->
+          <div class="hidden lg:block absolute top-16 left-[calc(16.66%+2rem)] right-[calc(16.66%+2rem)] h-0.5 bg-linear-to-r from-indigo-500/50 via-violet-500/50 to-emerald-500/50"></div>
+
+          <div class="grid sm:grid-cols-3 gap-8 lg:gap-4">
+
+            <!-- Paso 1 -->
+            <div class="fade-in flex flex-col items-center text-center">
+              <div class="relative mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-linear-to-br from-indigo-500/20 to-indigo-600/10 border border-indigo-500/30 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+                  </svg>
+                </div>
+                <div class="absolute -top-2 -right-2 w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-bold">1</div>
+              </div>
+              <h3 class="font-bold text-white text-lg mb-3">Define tus tareas</h3>
+              <p class="text-sm text-slate-400 leading-relaxed max-w-xs mx-auto">
+                Cada mañana escribes lo que necesitas completar hoy. Sin importar si es una cosa o diez — tú decides el criterio de éxito del día.
+              </p>
+              <div class="mt-4 bg-indigo-500/10 border border-indigo-500/20 rounded-xl px-4 py-2">
+                <p class="text-xs text-indigo-300">📝 Lista diaria de tareas</p>
+              </div>
+            </div>
+
+            <!-- Paso 2 -->
+            <div class="fade-in flex flex-col items-center text-center">
+              <div class="relative mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-linear-to-br from-rose-500/20 to-rose-600/10 border border-rose-500/30 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-rose-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                  </svg>
+                </div>
+                <div class="absolute -top-2 -right-2 w-6 h-6 bg-rose-500 rounded-full flex items-center justify-center text-white text-xs font-bold">2</div>
+              </div>
+              <h3 class="font-bold text-white text-lg mb-3">Activa el Modo Guardián</h3>
+              <p class="text-sm text-slate-400 leading-relaxed max-w-xs mx-auto">
+                Con un toque, TaskMaster bloquea las apps que tú elijas y silencia las notificaciones. El guardián se mantiene activo mientras haya tareas pendientes.
+              </p>
+              <div class="mt-4 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-2">
+                <p class="text-xs text-rose-300">🔒 Apps bloqueadas · Notificaciones silenciadas</p>
+              </div>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="fade-in flex flex-col items-center text-center">
+              <div class="relative mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-linear-to-br from-emerald-500/20 to-emerald-600/10 border border-emerald-500/30 flex items-center justify-center">
+                  <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                  </svg>
+                </div>
+                <div class="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs font-bold">3</div>
+              </div>
+              <h3 class="font-bold text-white text-lg mb-3">Completa y desbloquea</h3>
+              <p class="text-sm text-slate-400 leading-relaxed max-w-xs mx-auto">
+                Al marcar cada tarea como lista, el acceso se va liberando. Cuando terminas todo, el guardián se desactiva. Tu tiempo libre es tuyo, ganado de verdad.
+              </p>
+              <div class="mt-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-2">
+                <p class="text-xs text-emerald-300">✅ Todo desbloqueado · Tiempo libre merecido</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CTA interno -->
+        <div class="fade-in mt-16 bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div class="text-left">
+            <p class="text-lg font-bold text-white mb-1">¿Listo para probarlo?</p>
+            <p class="text-sm text-slate-400">La app estará disponible próximamente. Sé de los primeros.</p>
+          </div>
+          <a href="#descarga" class="btn-primary shrink-0 text-white font-semibold px-7 py-3.5 rounded-2xl text-sm whitespace-nowrap">
+            Unirme a la lista de espera →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SOBRE NOSOTROS ========== -->
+    <section id="nosotros" class="bg-slate-900 py-24 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+          <!-- Texto -->
+          <div>
+            <div class="fade-in inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">Por qué existe TaskMaster</div>
+            <h2 class="fade-in text-3xl sm:text-4xl font-bold leading-snug mb-6 text-white">
+              La fuerza de voluntad<br/>
+              <span class="text-slate-400 font-normal">es un recurso limitado.</span>
+            </h2>
+            <div class="fade-in space-y-4 text-slate-400 leading-relaxed">
+              <p>
+                Todos lo hemos vivido: abrimos el teléfono "un segundo" para ver la hora y 40 minutos después seguimos en Instagram. No es debilidad — es que el entorno está diseñado para atraparte antes de que tu cerebro consciente pueda reaccionar.
+              </p>
+              <p>
+                Las apps de productividad tradicionales te piden más disciplina para resistir la distracción. TaskMaster invierte la ecuación: <strong class="text-slate-200">las distracciones están bloqueadas por defecto</strong>, y solo se abren cuando has ganado ese tiempo completando lo que tú mismo decidiste que importaba.
+              </p>
+              <p>
+                No te decimos qué hacer ni cuándo descansar. Tú defines tus tareas, tú eliges qué apps bloquear, tú fijas las reglas. TaskMaster simplemente las hace cumplir cuando tu fuerza de voluntad ya no puede hacerlo sola.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stats cards -->
+          <div class="fade-in grid grid-cols-2 gap-4">
+            <div class="card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 transition-all duration-300">
+              <div class="text-4xl font-extrabold text-indigo-400 mb-2">3h+</div>
+              <div class="text-sm text-slate-400">promedio diario perdido en apps que tú mismo querrías no abrir</div>
+            </div>
+            <div class="card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 transition-all duration-300">
+              <div class="text-4xl font-extrabold text-rose-400 mb-2">74%</div>
+              <div class="text-sm text-slate-400">de las personas abre el teléfono sin saber para qué</div>
+            </div>
+            <div class="card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 transition-all duration-300">
+              <div class="text-4xl font-extrabold text-emerald-400 mb-2">4×</div>
+              <div class="text-sm text-slate-400">más productividad cuando las distracciones están bloqueadas antes de empezar</div>
+            </div>
+            <div class="card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 transition-all duration-300">
+              <div class="text-4xl font-extrabold text-violet-400 mb-2">23 min</div>
+              <div class="text-sm text-slate-400">tarda el cerebro en recuperar el foco después de cada interrupción</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CARACTERÍSTICAS ========== -->
+    <section id="caracteristicas" class="bg-slate-800/30 py-24 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <div class="fade-in inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">Características</div>
+          <h2 class="fade-in text-3xl sm:text-4xl font-bold mb-4 text-white">Todo gira alrededor de tus tareas</h2>
+          <p class="fade-in text-slate-400 max-w-xl mx-auto">
+            La lista de tareas no es un accesorio. Es el núcleo del sistema. Todo lo demás se activa o desactiva dependiendo de ella.
+          </p>
+        </div>
+
+        <!-- Feature principal: Lista de tareas (full-width destacado) -->
+        <div class="fade-in card-glow bg-slate-800/50 border border-indigo-500/20 rounded-3xl p-8 md:p-10 mb-6 transition-all duration-300">
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-3 py-1 text-xs text-indigo-300 font-medium mb-5">
+                ⭐ Núcleo de la app
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-4">Lista de Tareas Inteligente</h3>
+              <p class="text-slate-400 leading-relaxed mb-6">
+                Crea, organiza y prioriza tus tareas del día en segundos. TaskMaster usa tu lista como el punto de verdad para todo lo demás: mientras haya tareas sin completar, el Modo Guardián puede estar activo y las distracciones, fuera.
+              </p>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3 text-sm text-slate-400">
+                  <svg class="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Añade tareas rápido con texto libre o plantillas
+                </li>
+                <li class="flex items-start gap-3 text-sm text-slate-400">
+                  <svg class="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Marca prioridad alta, media o baja por tarea
+                </li>
+                <li class="flex items-start gap-3 text-sm text-slate-400">
+                  <svg class="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Cada tarea completada actualiza el estado del Guardián en tiempo real
+                </li>
+                <li class="flex items-start gap-3 text-sm text-slate-400">
+                  <svg class="w-5 h-5 text-indigo-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  Historial de tareas para ver tu progreso semana a semana
+                </li>
+              </ul>
+            </div>
+            <!-- Mini demo visual de lista -->
+            <div class="bg-slate-900/60 border border-slate-700/50 rounded-2xl p-5 space-y-3">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-semibold text-white">Hoy, lunes</span>
+                <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">2/4 completadas</span>
+              </div>
+              <!-- Item done -->
+              <div class="flex items-center gap-3 opacity-60">
+                <div class="task-check done">
+                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <span class="text-sm text-slate-500 line-through">Contestar emails urgentes</span>
+              </div>
+              <div class="flex items-center gap-3 opacity-60">
+                <div class="task-check done">
+                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <span class="text-sm text-slate-500 line-through">Reunión de equipo 10am</span>
+              </div>
+              <!-- Items pendientes -->
+              <div class="flex items-center gap-3">
+                <div class="task-check border-violet-500/60"></div>
+                <div class="flex-1">
+                  <span class="text-sm text-slate-200">Entregar propuesta al cliente</span>
+                  <span class="ml-2 text-xs bg-rose-500/20 text-rose-400 px-1.5 py-0.5 rounded">Alta</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="task-check border-slate-600"></div>
+                <span class="text-sm text-slate-200">Revisar PR del repositorio</span>
+              </div>
+              <!-- Barra de progreso -->
+              <div class="pt-2">
+                <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                  <div class="h-full w-1/2 bg-linear-to-r from-indigo-500 to-violet-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de features secundarias: todas condicionadas a las tareas -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <!-- Modo Guardián -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Modo Guardián</h3>
+              <span class="text-xs bg-rose-500/15 text-rose-400 border border-rose-500/20 px-2 py-0.5 rounded-full">Se activa con tareas pendientes</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Actívalo manualmente o en automático al iniciar el día. Mientras tengas tareas sin completar, el Guardián puede bloquear las apps que tú elijas. Cuando terminas todo, se desactiva solo.
+            </p>
+          </div>
+
+          <!-- Bloqueo de apps condicionado -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Bloqueo de Apps</h3>
+              <span class="text-xs bg-violet-500/15 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-full">Tú decides cuáles</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Selecciona qué apps bloquear mientras el Guardián está activo. Instagram, TikTok, YouTube, lo que sea. El acceso se restaura de forma progresiva conforme completas tareas.
+            </p>
+          </div>
+
+          <!-- Silencio de notificaciones -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.143 17.082a24.248 24.248 0 003.844.148m-3.844-.148a23.856 23.856 0 01-5.455-1.31 8.964 8.964 0 002.3-5.542m3.155 6.852a3 3 0 005.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 003.536-1.003A8.967 8.967 0 0118 9.75V9A6 6 0 006.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Silencio Inteligente</h3>
+              <span class="text-xs bg-amber-500/15 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">Activo con Guardián</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Silencia notificaciones de apps no esenciales mientras tienes el Guardián activo. Solo las que tú marques como prioritarias (llamadas, mensajes urgentes) pueden interrumpirte.
+            </p>
+          </div>
+
+          <!-- Desbloqueo progresivo -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Desbloqueo Progresivo</h3>
+              <span class="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">Por tarea completada</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Cada tarea que completas puede desbloquear una app específica. Termina la tarea de mayor prioridad y gana acceso a Instagram. Termina todo y el tiempo libre es completamente tuyo.
+            </p>
+          </div>
+
+          <!-- Panel de tiempo ganado -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Tiempo Ganado</h3>
+              <span class="text-xs bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full">Tu recompensa visual</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Ve exactamente cuánto tiempo de distracción bloqueaste hoy. Eso no es tiempo perdido — es tiempo que recuperaste para lo que de verdad quieres hacer.
+            </p>
+          </div>
+
+          <!-- Rachas -->
+          <div class="fade-in card-glow bg-slate-800/50 border border-slate-700/50 rounded-2xl p-7 text-left transition-all duration-300">
+            <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-5">
+              <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"/>
+              </svg>
+            </div>
+            <div class="flex items-center gap-2 mb-3">
+              <h3 class="font-semibold text-white">Rachas de Disciplina</h3>
+              <span class="text-xs bg-orange-500/15 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded-full">Motivación diaria</span>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Cada día que completas todas tus tareas suma a tu racha. Un sistema de logros que hace que la disciplina genere su propia motivación, día a día.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ENCUESTA ========== -->
+    <section id="encuesta" class="bg-slate-900 py-24 px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="fade-in inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">Tu opinión nos importa</div>
+        <h2 class="fade-in text-3xl sm:text-4xl font-bold mb-4 text-white">Ayúdanos a construir<br/>la herramienta que necesitas</h2>
+        <p class="fade-in text-slate-400 mb-10 leading-relaxed">
+          Estamos en fase de investigación. Responder esta breve encuesta sobre tus hábitos digitales toma menos de 3 minutos y tiene un impacto directo en lo que construimos. Tu experiencia es nuestro mapa.
+        </p>
+
+        <div class="fade-in bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8 md:p-12">
+          <!-- Indicadores visuales -->
+          <div class="grid grid-cols-3 gap-4 mb-10">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-indigo-400 mb-1">3 min</div>
+              <div class="text-xs text-slate-500">de tu tiempo</div>
+            </div>
+            <div class="text-center border-x border-slate-700">
+              <div class="text-2xl font-bold text-violet-400 mb-1">8</div>
+              <div class="text-xs text-slate-500">preguntas</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-cyan-400 mb-1">100%</div>
+              <div class="text-xs text-slate-500">anónimo</div>
+            </div>
+          </div>
+
+          <!-- Botón enlace al formulario de Google Forms -->
+          <a
+            href="https://forms.gle/REEMPLAZA-CON-TU-LINK"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary inline-flex items-center gap-3 text-white font-semibold px-8 py-4 rounded-2xl text-lg"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Responder la encuesta
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+          </a>
+
+          <!-- Alternativa: iframe embebido (descomentar y reemplazar el src) -->
+          <!--
+          <iframe
+            src="https://docs.google.com/forms/d/e/REEMPLAZA_CON_TU_FORM_ID/viewform?embedded=true"
+            width="100%"
+            height="600"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            class="rounded-xl mt-8"
+          >
+            Cargando encuesta…
+          </iframe>
+          -->
+
+          <p class="mt-6 text-xs text-slate-500">
+            Al responder aceptas que usemos tus respuestas anónimas para mejorar el producto. Sin spam, prometido.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACTO / LISTA DE ESPERA ========== -->
+    <section id="contacto" class="bg-slate-800/30 py-24 px-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-start">
+
+          <!-- Info -->
+          <div>
+            <div class="fade-in inline-block text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">Lista de espera</div>
+            <h2 class="fade-in text-3xl sm:text-4xl font-bold mb-4 text-white">Sé el primero<br/>en probarlo.</h2>
+            <p class="fade-in text-slate-400 mb-8 leading-relaxed">
+              TaskMaster está en desarrollo activo. Regístrate y te avisamos en cuanto lancemos — además tendrás acceso prioritario a la beta y tu opinión influirá directamente en lo que construimos.
+            </p>
+
+            <!-- Beneficios -->
+            <div class="fade-in space-y-3 mb-10">
+              
+              <div class="flex items-center gap-3 text-sm text-slate-400">
+                <div class="w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                Notificación directa el día del lanzamiento
+              </div>
+              <div class="flex items-center gap-3 text-sm text-slate-400">
+                <div class="w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                Sin spam. Solo el aviso cuando esté lista.
+              </div>
+            </div>
+
+            <!-- Contador + redes -->
+            <div class="fade-in">
+
+              <div class="flex gap-3">
+                <a href="#" aria-label="Twitter / X" class="w-10 h-10 feature-icon rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="#" aria-label="Instagram" class="w-10 h-10 feature-icon rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="#" aria-label="LinkedIn" class="w-10 h-10 feature-icon rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario lista de espera -->
+          <div class="fade-in">
+            <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-8">
+              <h3 class="text-lg font-bold text-white mb-1">Únete a la lista de espera</h3>
+              <p class="text-sm text-slate-500 mb-6">Gratis. Sin compromisos. Solo te escribimos cuando lancemos.</p>
+
+              <form id="contact-form" novalidate class="space-y-4">
+                <div>
+                  <label for="nombre" class="block text-sm font-medium text-slate-300 mb-2">Nombre</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Tu nombre"
+                    class="w-full bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    required
+                  />
+                  <span class="field-error hidden text-xs text-rose-400 mt-1"></span>
+                </div>
+
+                <div>
+                  <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Correo electrónico</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="tu@correo.com"
+                    class="w-full bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    required
+                  />
+                  <span class="field-error hidden text-xs text-rose-400 mt-1 "></span>
+                </div>
+
+                <div>
+                  <label for="redes-mensaje" class="block text-sm font-medium text-slate-300 mb-2">¿Qué te distrae más? <span class="text-slate-600 font-normal">(opcional)</span></label>
+                  <textarea
+                    id="redes-mensaje"
+                    name="redes-mensaje"
+                    rows="3"
+                    placeholder="Instagram, YouTube, TikTok..."
+                    class="w-full bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                  ></textarea>
+                </div>
+                <div>
+                  <label for="mensaje" class="block text-sm font-medium text-slate-300 mb-2">Comentarios adicionales <span class="text-slate-600 font-normal">(opcional)</span></label>
+                  <textarea
+                    id="mensaje"
+                    name="mensaje"
+                    rows="3"
+                    placeholder="Escribenos un mensaje..."
+                    class="w-full bg-slate-900/60 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn-primary w-full text-white font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2"
+                >
+                  <span id="btn-send-text">Apuntarme a la lista</span>
+                  <svg id="btn-send-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                  </svg>
+                </button>
+
+                <div id="form-success" class="hidden bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-emerald-400 text-sm text-center">
+                  🎉 ¡Ya estás en la lista! Te avisamos en cuanto lancemos.
+                </div>
+              </form>
+            </div>
+
+            <p class="text-xs text-slate-600 text-center mt-4">¿Preguntas? Escríbenos a <a href="#" class="text-slate-500 hover:text-slate-300 transition-colors">hola@taskmaster.app</a></p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <!-- Logo -->
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">
+              TM
+            </div>
+            <span class="font-bold text-white">TaskMaster</span>
+          </div>
+
+          <!-- Links -->
+          <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-500">
+            <a href="#nosotros" class="hover:text-slate-300 transition-colors">Sobre Nosotros</a>
+            <a href="#encuesta" class="hover:text-slate-300 transition-colors">Encuesta</a>
+            <a href="/privacidad.html" class="hover:text-slate-300 transition-colors">Privacidad</a>
+            <a href="/terminos.html" class="hover:text-slate-300 transition-colors">Términos</a>
+            <a href="#contacto" class="hover:text-slate-300 transition-colors">Contacto</a>
+          </div>
+
+          <!-- Copyright -->
+          <p class="text-sm text-slate-600">
+            © <span id="year"></span> TaskMaster. Todos los derechos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>
