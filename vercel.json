@@ -1,6 +1,8 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".",
+  "framework": null,
   "cleanUrls": false,
-  "framework": null
+  "routes": [
+    { "src": "/descarga-ios.html",     "dest": "/404.html", "status": 404 },
+    { "src": "/descarga-android.html", "dest": "/404.html", "status": 404 }
+  ]
 }
