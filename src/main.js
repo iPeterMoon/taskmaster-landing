@@ -305,15 +305,17 @@
       submitBtn.disabled = true;
       if (btnText) btnText.textContent = "Guardando…";
 
-      const email = emailEl?.value?.trim() || "";
-      const name  = nombreEl?.value?.trim() || "";
-      const distraction = ($("#mensaje")?.value || "").trim();
+      const email       = emailEl?.value?.trim() || "";
+      const name        = nombreEl?.value?.trim() || "";
+      const distraction = ($("#redes-mensaje")?.value || "").trim();
+      const comments    = ($("#mensaje")?.value       || "").trim();
 
       postToScript({
         type: "waitlist",
         name,
         email,
         distraction,
+        comments,
         source: "index",
         timestamp: new Date().toISOString(),
       }).then(() => {
